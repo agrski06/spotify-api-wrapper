@@ -1,9 +1,9 @@
 package api.genres;
 
-import retrofit2.Call;
+import api.SyncCall;
 import retrofit2.http.GET;
 
-public interface GenreClient {
+public interface GenreService {
     @GET("recommendations/available-genre-seeds")
-    Call<GenreResponse> getGenres();
+    SyncCall<GenreResponse> getGenres();
 }

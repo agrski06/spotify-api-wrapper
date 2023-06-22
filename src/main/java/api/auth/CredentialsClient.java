@@ -1,7 +1,5 @@
-package api;
+package api.auth;
 
-import api.auth.Credentials;
-import api.auth.Token;
 import retrofit2.Call;
 import retrofit2.http.*;
 

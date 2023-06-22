@@ -8,7 +8,6 @@ public class MainWrapper {
                 .setClientSecret(clientSecret)
                 .build();
 
-        System.out.println(spotify.getToken());
         System.out.println(spotify.getSpotifyApi().getGenres());
     }
 }

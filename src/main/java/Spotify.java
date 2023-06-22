@@ -1,9 +1,8 @@
-import api.CredentialsClient;
+import api.auth.CredentialsClient;
 import api.auth.Credentials;
 import api.auth.Token;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import lombok.Builder;
 import lombok.Data;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
