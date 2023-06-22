@@ -1,30 +1,20 @@
 package api.auth;
 
-public class Token {
+import lombok.Data;
+
+@Data
+public class Credentials {
     private String clientId;
     private String clientSecret;
+    private String grantType;
 
-    public Token() {
+    public Credentials() {
+        this.grantType = "client_credentials";
     }
 
-    public Token(String clientId, String clientSecret) {
+    public Credentials(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        this.grantType = "client_credentials";
     }
 }
