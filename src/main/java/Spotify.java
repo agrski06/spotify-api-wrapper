@@ -16,6 +16,7 @@ import java.io.IOException;
 @Data
 public class Spotify {
     private Token token;
+    private SpotifyApi spotifyApi;
 
     private Spotify(String clientId, String clientSecret, boolean enableLogging) {
         // Spotify API seems to be using this naming strategy
@@ -43,6 +44,7 @@ public class Spotify {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        spotifyApi = new SpotifyApi(token);
     }
 
     public static class Builder {
