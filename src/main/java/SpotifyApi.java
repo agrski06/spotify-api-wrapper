@@ -56,4 +56,6 @@ public class SpotifyApi {
                 .stream().map(Genre::new)
                 .collect(Collectors.toSet());
     }
+
+
 }
