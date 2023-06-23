@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class MainWrapper {
     public static void main(String[] args) {
         String clientId = args[0];
@@ -9,6 +11,7 @@ public class MainWrapper {
                 .build();
 
         SpotifyApi spotifyApi = spotify.getSpotifyApi();
-        System.out.println(spotifyApi.getTrackById("11dFghVXANMlKmJXsNCbNla"));
+        System.out.println(spotifyApi.getAudioFeatures(List.of("7ouMYWpwJ422jRcDASZB7P")));
+
     }
 }
