@@ -7,7 +7,7 @@ import retrofit2.CallAdapter;
 import java.lang.reflect.Type;
 
 @AllArgsConstructor
-public class SimpleCallAdapter<R> implements CallAdapter<R, Object> {
+public class SyncCallAdapter<R> implements CallAdapter<R, Object> {
     private Type responseType;
 
     @Override

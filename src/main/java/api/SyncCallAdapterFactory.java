@@ -7,8 +7,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public class SimpleCallAdapterFactory extends CallAdapter.Factory {
-    private SimpleCallAdapterFactory() {
+public class SyncCallAdapterFactory extends CallAdapter.Factory {
+    private SyncCallAdapterFactory() {
 
     }
 
@@ -18,14 +18,14 @@ public class SimpleCallAdapterFactory extends CallAdapter.Factory {
             Type enclosingType = parameterizedType.getRawType();
             if (enclosingType == SyncCall.class) {
                 Type type = parameterizedType.getActualTypeArguments()[0];
-                return new SimpleCallAdapter<>(type);
+                return new SyncCallAdapter<>(type);
             }
         }
 
         return null;
     }
 
-    public static SimpleCallAdapterFactory create() {
-        return new SimpleCallAdapterFactory();
+    public static SyncCallAdapterFactory create() {
+        return new SyncCallAdapterFactory();
     }
 }

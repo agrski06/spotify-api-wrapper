@@ -43,7 +43,7 @@ public class Spotify {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        spotifyApi = new SpotifyApi(token);
+        spotifyApi = new SpotifyApi(token, enableLogging);
     }
 
     public static class Builder {
