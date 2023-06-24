@@ -23,5 +23,8 @@ public interface TrackService {
     //TODO Check/Remove/Save/Get User's Saved Tracks (user auth)
 
     @GET("audio-features")
-    SyncCall<AudioFeaturesResponse> getAudioFeatures(@Query("ids") String ids);
+    SyncCall<AudioFeaturesResponse> getAudioFeaturesForTracks(@Query("ids") String ids);
+
+    @GET("audio-features/{id}")
+    SyncCall<AudioFeatures> getAudioFeaturesForTrack(@Path("id") String id);
 }

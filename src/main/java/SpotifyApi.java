@@ -2,6 +2,7 @@ import api.SyncCallAdapterFactory;
 import api.auth.Token;
 import api.genres.Genre;
 import api.tracks.AudioFeatures;
+import api.tracks.AudioFeaturesResponse;
 import api.tracks.Track;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -92,12 +93,15 @@ public class SpotifyApi {
 
     public Set<AudioFeatures> getAudioFeatures(List<String> ids) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getAudioFeatures(idsString).response().getAudioFeatures();
+        return serviceManager.getTrackService().getAudioFeaturesForTracks(idsString).response().getAudioFeatures();
     }
 
     public Set<AudioFeatures> getAudioFeatures(String... ids) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getAudioFeatures(idsString).response().getAudioFeatures();
+        return serviceManager.getTrackService().getAudioFeaturesForTracks(idsString).response().getAudioFeatures();
     }
 
+    public AudioFeatures getAudioFeatures(String id) {
+        return serviceManager.getTrackService().getAudioFeaturesForTrack(id).response();
+    }
 }
