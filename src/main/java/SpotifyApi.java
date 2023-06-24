@@ -104,4 +104,10 @@ public class SpotifyApi {
     public AudioFeatures getAudioFeatures(String id) {
         return serviceManager.getTrackService().getAudioFeaturesForTrack(id).response();
     }
+
+    public AudioFeatures getAudioFeatures(Track track) {
+        return serviceManager.getTrackService().getAudioFeaturesForTrack(track.getId()).response();
+    }
+
+
 }
