@@ -1,6 +1,7 @@
 import api.SyncCallAdapterFactory;
 import api.auth.Token;
 import api.genres.Genre;
+import api.tracks.AudioAnalysis;
 import api.tracks.AudioFeatures;
 import api.tracks.AudioFeaturesResponse;
 import api.tracks.Track;
@@ -109,5 +110,8 @@ public class SpotifyApi {
         return serviceManager.getTrackService().getAudioFeaturesForTrack(track.getId()).response();
     }
 
+    public AudioAnalysis getAudioAnalysis(String id) {
+        return serviceManager.getTrackService().getAudioAnalysis(id).response();
+    }
 
 }

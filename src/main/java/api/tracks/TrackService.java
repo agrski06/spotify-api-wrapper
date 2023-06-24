@@ -27,4 +27,7 @@ public interface TrackService {
 
     @GET("audio-features/{id}")
     SyncCall<AudioFeatures> getAudioFeaturesForTrack(@Path("id") String id);
+
+    @GET("audio-analysis/{id}")
+    SyncCall<AudioAnalysis> getAudioAnalysis(@Path("id") String id);
 }

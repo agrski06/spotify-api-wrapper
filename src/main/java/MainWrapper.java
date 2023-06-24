@@ -11,7 +11,7 @@ public class MainWrapper {
                 .build();
 
         SpotifyApi spotifyApi = spotify.getSpotifyApi();
-        System.out.println(spotifyApi.getAudioFeatures(List.of("7ouMYWpwJ422jRcDASZB7P")));
+        System.out.println(spotifyApi.getAudioAnalysis("7ouMYWpwJ422jRcDASZB7P"));
 
     }
 }
