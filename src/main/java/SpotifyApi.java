@@ -1,10 +1,7 @@
 import api.SyncCallAdapterFactory;
 import api.auth.Token;
 import api.genres.Genre;
-import api.tracks.AudioAnalysis;
-import api.tracks.AudioFeatures;
-import api.tracks.AudioFeaturesResponse;
-import api.tracks.Track;
+import api.tracks.*;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import okhttp3.HttpUrl;
@@ -112,6 +109,10 @@ public class SpotifyApi {
 
     public AudioAnalysis getAudioAnalysis(String id) {
         return serviceManager.getTrackService().getAudioAnalysis(id).response();
+    }
+
+    public Recommendation getRecommendation(RecommendationRequest request) {
+        return serviceManager.getTrackService().getRecommendation(request.getQueryString()).response();
     }
 
 }

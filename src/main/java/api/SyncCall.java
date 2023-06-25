@@ -32,6 +32,7 @@ public class SyncCall<R> {
                 return response.body();
             } else {
                 if (response.code() >= 400 && response.code() <= 511) {
+                    System.out.println(response.errorBody().string());
                     throw new HttpException(response);
                 } else {
                     return response.body();

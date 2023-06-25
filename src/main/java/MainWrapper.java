@@ -1,4 +1,4 @@
-import java.util.List;
+import api.tracks.RecommendationRequest;
 
 public class MainWrapper {
     public static void main(String[] args) {
@@ -8,10 +8,16 @@ public class MainWrapper {
         Spotify spotify = new Spotify.Builder()
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)
+                .enableHttpRequestLogging()
                 .build();
 
         SpotifyApi spotifyApi = spotify.getSpotifyApi();
-        System.out.println(spotifyApi.getAudioAnalysis("7ouMYWpwJ422jRcDASZB7P"));
+        RecommendationRequest request = RecommendationRequest.builder()
+                .seedArtists("4NHQUGzhtTLFvgF5SZesLK")
+                .seedGenres("classical")
+                .seedTracks("0c6xIDDpzE81m2q797ordA")
+                .build();
+        System.out.println(spotifyApi.getRecommendation(request));
 
     }
 }
