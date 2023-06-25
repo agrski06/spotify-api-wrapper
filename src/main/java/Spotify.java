@@ -17,7 +17,7 @@ import java.util.Base64;
 public class Spotify {
     private Token token;
     private AuthToken authToken;
-    private SpotifyApi<? extends Token> spotifyApi;
+    private SpotifyApi spotifyApi;
 
     /**
      * Constructor used for client_credentials auth flow
@@ -34,11 +34,11 @@ public class Spotify {
             this.token = credentialsClient.getToken(credentials.getClientId(),
                     credentials.getClientSecret(),
                     credentials.getGrantType()).response();
-            spotifyApi = new SpotifyApi<>(this.token, enableLogging);
+            spotifyApi = new SpotifyApi(this.token, enableLogging);
         } else {
             String authHeader = "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
             this.authToken = credentialsClient.getAuthToken(authHeader, "authorization_code", code, redirectUri).response();
-            spotifyApi = new SpotifyApi<>(this.authToken, enableLogging);
+            spotifyApi = new SpotifyApi(this.authToken, enableLogging);
         }
     }
 
@@ -80,12 +80,6 @@ public class Spotify {
         private String code;
         private String redirectUri;
         private boolean enableHttpRequestLogging = false;
-
-        public Builder createDefault(String clientId, String clientSecret) {
-            this.clientId = clientId;
-            this.clientSecret = clientSecret;
-            return this;
-        }
 
         public Builder setClientId(String clientId) {
             this.clientId = clientId;

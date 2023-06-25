@@ -14,7 +14,7 @@ public class MainWrapper {
 
         System.out.println(spotify.generateAuthUri(clientId, "http://localhost:5173/callback", null, null, false));
 
-        SpotifyApi<?> spotifyApi = spotify.getSpotifyApi();
+        SpotifyApi spotifyApi = spotify.getSpotifyApi();
         RecommendationRequest request = RecommendationRequest.builder()
                 .seedArtists("4NHQUGzhtTLFvgF5SZesLK")
                 .seedGenres("classical")

@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SpotifyApi<T extends Token> {
+public class SpotifyApi {
     private final Retrofit retrofit;
     private final ServiceManager serviceManager;
 
-    public SpotifyApi(T token, boolean enableLogging) {
+    public SpotifyApi(Token token, boolean enableLogging) {
         OkHttpClient.Builder clientWithAuthHeader = new OkHttpClient().newBuilder()
                 .addInterceptor(chain -> {
                     Request request = chain.request();
