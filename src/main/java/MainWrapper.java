@@ -8,7 +8,6 @@ public class MainWrapper {
         Spotify spotify = new Spotify.Builder()
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)
-                .enableHttpRequestLogging()
                 .build();
 
         SpotifyApi spotifyApi = spotify.getSpotifyApi();
@@ -18,6 +17,5 @@ public class MainWrapper {
                 .seedTracks("0c6xIDDpzE81m2q797ordA")
                 .build();
         System.out.println(spotifyApi.getRecommendation(request));
-
     }
 }

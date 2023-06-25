@@ -112,7 +112,55 @@ public class SpotifyApi {
     }
 
     public Recommendation getRecommendation(RecommendationRequest request) {
-        return serviceManager.getTrackService().getRecommendation(request.getQueryString()).response();
+        return serviceManager.getTrackService().getRecommendation(
+                request.getLimit(),
+                request.getMarket(),
+                request.getSeedArtists(),
+                request.getSeedGenres(),
+                request.getSeedTracks(),
+                request.getMinAcousticness(),
+                request.getMaxAcousticness(),
+                request.getTargetAcousticness(),
+                request.getMinDanceability(),
+                request.getMaxDanceability(),
+                request.getTargetDanceability(),
+                request.getMinDurationMs(),
+                request.getMaxDurationMs(),
+                request.getTargetDurationMs(),
+                request.getMinEnergy(),
+                request.getMaxEnergy(),
+                request.getTargetEnergy(),
+                request.getMinInstrumentalness(),
+                request.getMaxInstrumentalness(),
+                request.getTargetInstrumentalness(),
+                request.getMinKey(),
+                request.getMaxKey(),
+                request.getTargetKey(),
+                request.getMinLiveness(),
+                request.getMaxLiveness(),
+                request.getTargetLiveness(),
+                request.getMinLoudness(),
+                request.getMaxLoudness(),
+                request.getTargetLoudness(),
+                request.getMinMode(),
+                request.getMaxMode(),
+                request.getTargetMode(),
+                request.getMinPopularity(),
+                request.getMaxPopularity(),
+                request.getTargetPopularity(),
+                request.getMinSpeechiness(),
+                request.getMaxSpeechiness(),
+                request.getTargetSpeechiness(),
+                request.getMinTempo(),
+                request.getMaxTempo(),
+                request.getTargetTempo(),
+                request.getMinTimeSignature(),
+                request.getMaxTimeSignature(),
+                request.getTargetTimeSignature(),
+                request.getMinValence(),
+                request.getMaxValence(),
+                request.getTargetValence()
+        ).response();
     }
 
 }
