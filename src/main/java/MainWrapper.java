@@ -12,6 +12,7 @@ public class MainWrapper {
                 .setRedirectUri("http://localhost:5173/callback")
                 .build();
 
+
         System.out.println(spotify.generateAuthUri(clientId, "http://localhost:5173/callback", null, null, false));
 
         SpotifyApi spotifyApi = spotify.getSpotifyApi();
