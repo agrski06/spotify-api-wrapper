@@ -1,5 +1,7 @@
 package api.auth;
 
+import java.util.Arrays;
+
 public enum AuthScope {
     UGC_IMAGE_UPLOAD,
     USER_READ_PLAYBACK_STATE,
@@ -29,4 +31,14 @@ public enum AuthScope {
     public String toString() {
         return this.name().toLowerCase().replace('_', '-');
     }
+
+    public static AuthScope fromString(String name) {
+        String value = name.toUpperCase().replace('-', '_');
+        if (Arrays.stream(AuthScope.values())
+                .anyMatch(authScope -> authScope.name().equals(value))) {
+            return AuthScope.valueOf(value);
+        }
+        return null;
+    }
+
 }
