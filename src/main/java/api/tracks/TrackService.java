@@ -1,12 +1,10 @@
 package api.tracks;
 
 import api.SyncCall;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
+import retrofit2.http.*;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface TrackService {
     @GET("tracks/{id}")
@@ -23,7 +21,35 @@ public interface TrackService {
     SyncCall<TracksResponse> getTracks(@Query("ids") String ids,
                                    @Query("market") String market);
 
-    //TODO Check/Remove/Save/Get User's Saved Tracks (user auth)
+    /**
+     * Get a list of the songs saved in the current Spotify user's 'Your Music' library.
+     * Requires user-library-read scope
+     */
+    @GET("me/tracks")
+    SyncCall<SavedTracksResponse> getSavedTracks(@Query("market") String market,
+                                                 @Query("limit") Integer limit,
+                                                 @Query("offset") Integer offset);
+
+    /**
+     * Save one or more tracks to the current user's 'Your Music' library.
+     * Requires user-library-modify scope
+     */
+    @PUT("me/tracks")
+    SyncCall<Void> saveTracksForCurrentUser(@Body TracksRequest request);
+
+    /**
+     * Remove one or more tracks from the current user's 'Your Music' library.
+     * Requires user-library-modify scope
+     */
+    @DELETE("me/tracks")
+    SyncCall<Void> deleteTracksForCurrentUser(@Body TracksRequest request);
+
+    /**
+     * Check if one or more tracks is already saved in the current Spotify user's 'Your Music' library.
+     * Requires user-library-read scope
+     */
+    @GET("me/tracks/contains")
+    SyncCall<Set<Boolean>> checkTracksForCurrentUser(@Query("ids") String ids);
 
     @GET("audio-features")
     SyncCall<AudioFeaturesResponse> getAudioFeaturesForTracks(@Query("ids") String ids);
