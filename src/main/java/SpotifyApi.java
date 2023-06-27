@@ -1,4 +1,7 @@
 import api.SyncCallAdapterFactory;
+import api.auth.AuthScope;
+import api.auth.AuthToken;
+import api.auth.AuthType;
 import api.auth.Token;
 import api.genres.Genre;
 import api.tracks.*;
@@ -18,8 +21,16 @@ import java.util.stream.Collectors;
 public class SpotifyApi {
     private final Retrofit retrofit;
     private final ServiceManager serviceManager;
+    private AuthType authType;
+    private Set<AuthScope> authScopes;
 
     public SpotifyApi(Token token, boolean enableLogging) {
+        if (token instanceof AuthToken) {
+            this.authType = AuthType.AUTH_CODE;
+            this.authScopes = ((AuthToken) token).getScopes();
+        } else {
+            this.authType = AuthType.CLIENT_CREDENTIALS;
+        }
         OkHttpClient.Builder clientWithAuthHeader = new OkHttpClient().newBuilder()
                 .addInterceptor(chain -> {
                     Request request = chain.request();
@@ -87,6 +98,16 @@ public class SpotifyApi {
     public Set<Track> getTracks(String... ids) {
         String idsString = String.join(",", ids);
         return serviceManager.getTrackService().getTracks(idsString).response().getTracks();
+    }
+
+    public TrackPage getUsersTracks(String market, Integer limit, Integer offset) {
+        if (authType != AuthType.AUTH_CODE) {
+            throw new RuntimeException("Cannot read user's tracks (invalid auth type).");
+        }
+        if (!authScopes.contains(AuthScope.USER_LIBRARY_READ)) {
+            throw new RuntimeException("Cannot read user's tracks (no user-library-read scope).");
+        }
+        return serviceManager.getTrackService().getSavedTracks(market, limit, offset).response();
     }
 
     public Set<AudioFeatures> getAudioFeatures(List<String> ids) {

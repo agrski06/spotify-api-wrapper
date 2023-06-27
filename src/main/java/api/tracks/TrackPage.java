@@ -9,7 +9,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class SavedTracksResponse {
+public class TrackPage {
     private String href;
     private Integer limit;
     private String next;

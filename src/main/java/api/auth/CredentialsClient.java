@@ -21,8 +21,8 @@ public interface CredentialsClient {
 
     @POST("api/token")
     @FormUrlEncoded
-    SyncCall<AuthToken> getAuthToken(@Header("Authorization") String authorization,
-                                     @Field("grant_type") String grantType,
-                                     @Field("code") String code,
-                                     @Field("redirect_uri") String redirectUri);
+    SyncCall<AuthTokenResponse> getAuthToken(@Header("Authorization") String authorization,
+                                             @Field("grant_type") String grantType,
+                                             @Field("code") String code,
+                                             @Field("redirect_uri") String redirectUri);
 }

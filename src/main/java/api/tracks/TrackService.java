@@ -26,9 +26,9 @@ public interface TrackService {
      * Requires user-library-read scope
      */
     @GET("me/tracks")
-    SyncCall<SavedTracksResponse> getSavedTracks(@Query("market") String market,
-                                                 @Query("limit") Integer limit,
-                                                 @Query("offset") Integer offset);
+    SyncCall<TrackPage> getSavedTracks(@Query("market") String market,
+                                       @Query("limit") Integer limit,
+                                       @Query("offset") Integer offset);
 
     /**
      * Save one or more tracks to the current user's 'Your Music' library.

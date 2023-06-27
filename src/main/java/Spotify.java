@@ -8,11 +8,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 public class Spotify {
@@ -42,12 +40,8 @@ public class Spotify {
         } else {
             this.authType = AuthType.AUTH_CODE;
             String authHeader = "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
-            this.authToken = credentialsClient.getAuthToken(authHeader, "authorization_code", code, redirectUri).response();
-            if (this.authToken.getScope() != null) {
-                this.authScopes = Arrays.stream(this.authToken.getScope().split(" "))
-                        .map(AuthScope::fromString)
-                        .collect(Collectors.toCollection(HashSet::new));
-            }
+            AuthTokenResponse authTokenResponse = credentialsClient.getAuthToken(authHeader, "authorization_code", code, redirectUri).response();
+            this.authToken = new AuthToken(authTokenResponse);
             spotifyApi = new SpotifyApi(this.authToken, enableLogging);
         }
     }
