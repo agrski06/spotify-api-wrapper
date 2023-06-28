@@ -11,4 +11,8 @@ import java.util.Set;
 @Data
 public class TracksRequest {
     private Set<String> ids;
+
+    public String toCommaSeparatedString() {
+        return String.join(",", ids);
+    }
 }

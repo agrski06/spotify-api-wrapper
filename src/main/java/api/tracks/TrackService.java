@@ -38,11 +38,13 @@ public interface TrackService {
     SyncCall<Void> saveTracksForCurrentUser(@Body TracksRequest request);
 
     /**
-     * Remove one or more tracks from the current user's 'Your Music' library.
-     * Requires user-library-modify scope
+     * Remove one or more tracks from the current user's 'Your Music' library. <br>
+     * Requires to pass ids as query param and as body. <br>
+     * Requires user-library-modify scope.
      */
     @DELETE("me/tracks")
-    SyncCall<Void> deleteTracksForCurrentUser(@Body TracksRequest request);
+    SyncCall<Void> deleteTracksForCurrentUser(@Query("ids") String ids,
+                                              @Body TracksRequest request);
 
     /**
      * Check if one or more tracks is already saved in the current Spotify user's 'Your Music' library.

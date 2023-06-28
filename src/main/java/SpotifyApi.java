@@ -101,13 +101,59 @@ public class SpotifyApi {
     }
 
     public TrackPage getUsersTracks(String market, Integer limit, Integer offset) {
+        checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's tracks (no user-library-read scope).");
+        return serviceManager.getTrackService().getSavedTracks(market, limit, offset).response();
+    }
+
+    public void saveTracksForUser(TracksRequest request) {
+        checkAuth(AuthScope.USER_LIBRARY_MODIFY, "Cannot save user's tracks (no user-library-modify scope).");
+        serviceManager.getTrackService().saveTracksForCurrentUser(request).handle((response, throwable) -> {
+            if (throwable != null) {
+                throw new RuntimeException(throwable.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Removes track from user's library
+     * @param request object containing set of ids
+     */
+    public void removeTracksForUser(TracksRequest request) {
+        checkAuth(AuthScope.USER_LIBRARY_MODIFY, "Cannot delete user's tracks (no user-library-modify scope).");
+        serviceManager.getTrackService().deleteTracksForCurrentUser(request.toCommaSeparatedString(), request).handle((response, throwable) -> {
+            if (throwable != null) {
+                throw new RuntimeException(throwable.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Check whether the user has specified tracks saved in library
+     * @param ids comma-separated list of the Spotify IDs
+     * @return set of booleans
+     */
+    public Set<Boolean> checkIfUserHasTrackSaved(String ids) {
+        checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's tracks (no user-library-read scope).");
+        return serviceManager.getTrackService().checkTracksForCurrentUser(ids).response();
+    }
+
+    /**
+     * Check whether the user has specified tracks saved in library
+     * @param ids list of ids
+     * @return set of booleans
+     */
+    public Set<Boolean> checkIfUserHasTrackSaved(String... ids) {
+        checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's tracks (no user-library-read scope).");
+        return serviceManager.getTrackService().checkTracksForCurrentUser(String.join(",", ids)).response();
+    }
+
+    private void checkAuth(AuthScope scopes, String errorMessage) {
         if (authType != AuthType.AUTH_CODE) {
             throw new RuntimeException("Cannot read user's tracks (invalid auth type).");
         }
-        if (!authScopes.contains(AuthScope.USER_LIBRARY_READ)) {
-            throw new RuntimeException("Cannot read user's tracks (no user-library-read scope).");
+        if (!authScopes.contains(scopes)) {
+            throw new RuntimeException(errorMessage);
         }
-        return serviceManager.getTrackService().getSavedTracks(market, limit, offset).response();
     }
 
     public Set<AudioFeatures> getAudioFeatures(List<String> ids) {
