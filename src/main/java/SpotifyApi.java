@@ -65,44 +65,62 @@ public class SpotifyApi {
         this.serviceManager = new ServiceManager(retrofit);
     }
 
+    private void checkAuth(AuthScope scope, String errorMessage) {
+        if (authType != AuthType.AUTH_CODE) {
+            throw new RuntimeException("Cannot read user's tracks (invalid auth type).");
+        }
+        if (!authScopes.contains(scope)) {
+            throw new RuntimeException(errorMessage);
+        }
+    }
+
+    private void checkAuth(Set<AuthScope> scopes, String errorMessage) {
+        if (authType != AuthType.AUTH_CODE) {
+            throw new RuntimeException("Cannot read user's tracks (invalid auth type).");
+        }
+        if (!authScopes.containsAll(scopes)) {
+            throw new RuntimeException(errorMessage);
+        }
+    }
+
     public Set<Genre> getGenres() {
-        return serviceManager.getGenreService().getGenres().response()
+        return serviceManager.getGenreService().getGenres().responseBody()
                 .getGenres()
                 .stream().map(Genre::new)
                 .collect(Collectors.toSet());
     }
 
     public Track getTrackById(String id) {
-        return serviceManager.getTrackService().getTrack(id).response();
+        return serviceManager.getTrackService().getTrack(id).responseBody();
     }
 
     public Track getTrackById(String id, String market) {
-        return serviceManager.getTrackService().getTrack(id, market).response();
+        return serviceManager.getTrackService().getTrack(id, market).responseBody();
     }
 
     public Set<Track> getTracks(List<String> ids, String market) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getTracks(idsString, market).response().getTracks();
+        return serviceManager.getTrackService().getTracks(idsString, market).responseBody().getTracks();
     }
 
     public Set<Track> getTracks(List<String> ids) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getTracks(idsString).response().getTracks();
+        return serviceManager.getTrackService().getTracks(idsString).responseBody().getTracks();
     }
 
     public Set<Track> getTracks(String market, String... ids) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getTracks(idsString, market).response().getTracks();
+        return serviceManager.getTrackService().getTracks(idsString, market).responseBody().getTracks();
     }
 
     public Set<Track> getTracks(String... ids) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getTracks(idsString).response().getTracks();
+        return serviceManager.getTrackService().getTracks(idsString).responseBody().getTracks();
     }
 
     public TrackPage getUsersTracks(String market, Integer limit, Integer offset) {
         checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's tracks (no user-library-read scope).");
-        return serviceManager.getTrackService().getSavedTracks(market, limit, offset).response();
+        return serviceManager.getTrackService().getSavedTracks(market, limit, offset).responseBody();
     }
 
     public void saveTracksForUser(TracksRequest request) {
@@ -134,7 +152,7 @@ public class SpotifyApi {
      */
     public Set<Boolean> checkIfUserHasTrackSaved(String ids) {
         checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's tracks (no user-library-read scope).");
-        return serviceManager.getTrackService().checkTracksForCurrentUser(ids).response();
+        return serviceManager.getTrackService().checkTracksForCurrentUser(ids).responseBody();
     }
 
     /**
@@ -144,38 +162,29 @@ public class SpotifyApi {
      */
     public Set<Boolean> checkIfUserHasTrackSaved(String... ids) {
         checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's tracks (no user-library-read scope).");
-        return serviceManager.getTrackService().checkTracksForCurrentUser(String.join(",", ids)).response();
-    }
-
-    private void checkAuth(AuthScope scopes, String errorMessage) {
-        if (authType != AuthType.AUTH_CODE) {
-            throw new RuntimeException("Cannot read user's tracks (invalid auth type).");
-        }
-        if (!authScopes.contains(scopes)) {
-            throw new RuntimeException(errorMessage);
-        }
+        return serviceManager.getTrackService().checkTracksForCurrentUser(String.join(",", ids)).responseBody();
     }
 
     public Set<AudioFeatures> getAudioFeatures(List<String> ids) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getAudioFeaturesForTracks(idsString).response().getAudioFeatures();
+        return serviceManager.getTrackService().getAudioFeaturesForTracks(idsString).responseBody().getAudioFeatures();
     }
 
     public Set<AudioFeatures> getAudioFeatures(String... ids) {
         String idsString = String.join(",", ids);
-        return serviceManager.getTrackService().getAudioFeaturesForTracks(idsString).response().getAudioFeatures();
+        return serviceManager.getTrackService().getAudioFeaturesForTracks(idsString).responseBody().getAudioFeatures();
     }
 
     public AudioFeatures getAudioFeatures(String id) {
-        return serviceManager.getTrackService().getAudioFeaturesForTrack(id).response();
+        return serviceManager.getTrackService().getAudioFeaturesForTrack(id).responseBody();
     }
 
     public AudioFeatures getAudioFeatures(Track track) {
-        return serviceManager.getTrackService().getAudioFeaturesForTrack(track.getId()).response();
+        return serviceManager.getTrackService().getAudioFeaturesForTrack(track.getId()).responseBody();
     }
 
     public AudioAnalysis getAudioAnalysis(String id) {
-        return serviceManager.getTrackService().getAudioAnalysis(id).response();
+        return serviceManager.getTrackService().getAudioAnalysis(id).responseBody();
     }
 
     public Recommendation getRecommendation(RecommendationRequest request) {
@@ -227,7 +236,7 @@ public class SpotifyApi {
                 request.getMinValence(),
                 request.getMaxValence(),
                 request.getTargetValence()
-        ).response();
+        ).responseBody();
     }
 
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 public class Spotify {
     private Token token;
     private AuthToken authToken;
-    private SpotifyApi spotifyApi;
+    private SpotifyApi api;
     private HashSet<AuthScope> authScopes = new HashSet<>();
     private AuthType authType;
 
@@ -35,14 +35,14 @@ public class Spotify {
             this.authType = AuthType.CLIENT_CREDENTIALS;
             this.token = credentialsClient.getToken(credentials.getClientId(),
                     credentials.getClientSecret(),
-                    credentials.getGrantType()).response();
-            spotifyApi = new SpotifyApi(this.token, enableLogging);
+                    credentials.getGrantType()).responseBody();
+            api = new SpotifyApi(this.token, enableLogging);
         } else {
             this.authType = AuthType.AUTH_CODE;
             String authHeader = "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
-            AuthTokenResponse authTokenResponse = credentialsClient.getAuthToken(authHeader, "authorization_code", code, redirectUri).response();
+            AuthTokenResponse authTokenResponse = credentialsClient.getAuthToken(authHeader, "authorization_code", code, redirectUri).responseBody();
             this.authToken = new AuthToken(authTokenResponse);
-            spotifyApi = new SpotifyApi(this.authToken, enableLogging);
+            api = new SpotifyApi(this.authToken, enableLogging);
         }
     }
 
