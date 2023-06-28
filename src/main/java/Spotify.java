@@ -1,4 +1,5 @@
 import api.SyncCallAdapterFactory;
+import api.TokenManager;
 import api.auth.*;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -29,20 +30,26 @@ public class Spotify {
     private Spotify(String clientId, String clientSecret, String code, String redirectUri, boolean enableLogging) {
         Retrofit retrofit = getRetrofit(enableLogging);
         Credentials credentials = new Credentials(clientId, clientSecret);
-        CredentialsClient credentialsClient = retrofit.create(CredentialsClient.class);
+        CredentialsService credentialsService = retrofit.create(CredentialsService.class);
+        TokenManager.getInstance().setCredentialsService(credentialsService);
 
         if (code == null || code.isBlank() || redirectUri == null || redirectUri.isBlank()) {
             this.authType = AuthType.CLIENT_CREDENTIALS;
-            this.token = credentialsClient.getToken(credentials.getClientId(),
+            this.token = credentialsService.getToken(credentials.getClientId(),
                     credentials.getClientSecret(),
                     credentials.getGrantType()).responseBody();
             api = new SpotifyApi(this.token, enableLogging);
+            TokenManager.getInstance().setToken(this.token);
+            TokenManager.getInstance().setAuthType(AuthType.CLIENT_CREDENTIALS);
         } else {
             this.authType = AuthType.AUTH_CODE;
             String authHeader = "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
-            AuthTokenResponse authTokenResponse = credentialsClient.getAuthToken(authHeader, "authorization_code", code, redirectUri).responseBody();
+            TokenManager.getInstance().setAuthString(authHeader);
+            AuthTokenResponse authTokenResponse = credentialsService.getAuthToken(authHeader, "authorization_code", code, redirectUri).responseBody();
             this.authToken = new AuthToken(authTokenResponse);
             api = new SpotifyApi(this.authToken, enableLogging);
+            TokenManager.getInstance().setAuthToken(this.authToken);
+            TokenManager.getInstance().setAuthType(AuthType.AUTH_CODE);
         }
     }
 
@@ -73,7 +80,7 @@ public class Spotify {
             throw new RuntimeException("ClientId and RedirectURI cannot be null!");
         }
         Retrofit retrofit = getRetrofit(false);
-        return retrofit.create(CredentialsClient.class)
+        return retrofit.create(CredentialsService.class)
                 .getToken(clientId, "code", redirectUri, state, scope.isBlank() ? null : scope, showDialog)
                 .request().url().toString();
     }
@@ -87,7 +94,7 @@ public class Spotify {
         }
         String scopeString = String.join(",", scopes.stream().map(AuthScope::toString).toList());
         Retrofit retrofit = getRetrofit(false);
-        return retrofit.create(CredentialsClient.class)
+        return retrofit.create(CredentialsService.class)
                 .getToken(clientId, "code", redirectUri, state, scopeString, showDialog)
                 .request().url().toString();
     }

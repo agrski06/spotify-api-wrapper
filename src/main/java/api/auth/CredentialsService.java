@@ -4,12 +4,18 @@ import api.SyncCall;
 import retrofit2.Call;
 import retrofit2.http.*;
 
-public interface CredentialsClient {
+public interface CredentialsService {
+    @POST("api/token")
+    @FormUrlEncoded
+    SyncCall<AuthTokenResponse> getRefreshToken(@Field("grant_type") String grantType,
+                                                @Field("refresh_token") String refreshToken,
+                                                @Header("Authorization") String authorization);
+
     @POST("api/token")
     @FormUrlEncoded
     SyncCall<Token> getToken(@Field("client_id") String clientId,
-                         @Field("client_secret") String clientSecret,
-                         @Field("grant_type") String grantType);
+                             @Field("client_secret") String clientSecret,
+                             @Field("grant_type") String grantType);
 
     @GET("authorize")
     Call<Token> getToken(@Query("client_id") String clientId,

@@ -1,9 +1,6 @@
 package api.auth;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -14,6 +11,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString(callSuper = true)
 public class AuthToken extends Token{
     public Set<AuthScope> scopes = new HashSet<>();
     public String refreshToken;
