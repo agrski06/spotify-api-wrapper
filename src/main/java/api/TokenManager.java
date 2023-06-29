@@ -32,6 +32,15 @@ public class TokenManager {
         this.authToken.setExpiresIn(response.getExpiresIn());
     }
 
+    public void refreshToken() {
+        AuthTokenResponse response = credentialsService.getRefreshToken("refresh_token", authToken.getRefreshToken(), this.authString).responseBody();
+        this.authToken.setAccessToken(response.getAccessToken());
+        this.authToken.getScopes().addAll(Arrays.stream(response.getScope().split(" "))
+                .map(AuthScope::fromString)
+                .collect(Collectors.toCollection(HashSet::new)));
+        this.authToken.setExpiresIn(response.getExpiresIn());
+    }
+
     public void setAuthToken(AuthToken authToken) {
         this.authToken = authToken;
     }

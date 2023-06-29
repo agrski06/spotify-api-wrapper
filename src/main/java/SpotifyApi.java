@@ -4,9 +4,12 @@ import api.auth.AuthToken;
 import api.auth.AuthType;
 import api.auth.Token;
 import api.genres.Genre;
+import api.search.SearchResponse;
+import api.search.SearchType;
 import api.tracks.*;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import lombok.NonNull;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -83,12 +86,35 @@ public class SpotifyApi {
         }
     }
 
+    //////////////////////////////////////
+    //           API METHODS
+    //////////////////////////////////////
+
+    //////////////////////////////////////
+    //           GENRES
+    //////////////////////////////////////
+
     public Set<Genre> getGenres() {
         return serviceManager.getGenreService().getGenres().responseBody()
                 .getGenres()
                 .stream().map(Genre::new)
                 .collect(Collectors.toSet());
     }
+
+    //////////////////////////////////////
+    //           SEARCH
+    //////////////////////////////////////
+
+    public SearchResponse search(String query, SearchType type, String market, Integer limit, Integer offset, String includeExternal) {
+        return serviceManager.getSearchService().search(query, type.toString(), market, limit, offset, includeExternal).responseBody();
+    }
+
+    // TODO: more search options
+    // TODO: default values for market etc.
+
+    //////////////////////////////////////
+    //           TRACKS
+    //////////////////////////////////////
 
     public Track getTrackById(String id) {
         return serviceManager.getTrackService().getTrack(id).responseBody();

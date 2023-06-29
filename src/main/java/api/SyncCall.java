@@ -33,8 +33,7 @@ public class SyncCall<R> {
             } else {
                 if (response.code() == 401) {
                     // TODO: in future, implement refresh token there
-                    TokenManager.getInstance().refreshToken(TokenManager.getInstance().getAuthToken().getRefreshToken(),
-                            TokenManager.getInstance().getAuthString());
+                    TokenManager.getInstance().refreshToken();
                     throw new RuntimeException(response.message() + " (your token may be expired or revoked)");
                 }
                 if (response.code() == 429) {

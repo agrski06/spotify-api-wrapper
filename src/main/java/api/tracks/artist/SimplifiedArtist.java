@@ -1,4 +1,4 @@
-package api.tracks.album;
+package api.tracks.artist;
 
 import api.tracks.ExternalUrls;
 import lombok.AllArgsConstructor;

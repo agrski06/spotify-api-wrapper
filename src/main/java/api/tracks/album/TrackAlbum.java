@@ -4,6 +4,7 @@ import api.tracks.ExternalIds;
 import api.tracks.ExternalUrls;
 import api.tracks.Image;
 import api.tracks.Restrictions;
+import api.tracks.artist.SimplifiedArtist;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

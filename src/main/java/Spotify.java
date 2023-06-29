@@ -39,15 +39,17 @@ public class Spotify {
                     credentials.getClientSecret(),
                     credentials.getGrantType()).responseBody();
             api = new SpotifyApi(this.token, enableLogging);
+
             TokenManager.getInstance().setToken(this.token);
             TokenManager.getInstance().setAuthType(AuthType.CLIENT_CREDENTIALS);
         } else {
             this.authType = AuthType.AUTH_CODE;
             String authHeader = "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
-            TokenManager.getInstance().setAuthString(authHeader);
             AuthTokenResponse authTokenResponse = credentialsService.getAuthToken(authHeader, "authorization_code", code, redirectUri).responseBody();
             this.authToken = new AuthToken(authTokenResponse);
             api = new SpotifyApi(this.authToken, enableLogging);
+
+            TokenManager.getInstance().setAuthString(authHeader);
             TokenManager.getInstance().setAuthToken(this.authToken);
             TokenManager.getInstance().setAuthType(AuthType.AUTH_CODE);
         }
@@ -83,6 +85,14 @@ public class Spotify {
         return retrofit.create(CredentialsService.class)
                 .getToken(clientId, "code", redirectUri, state, scope.isBlank() ? null : scope, showDialog)
                 .request().url().toString();
+    }
+
+    public void refreshToken() {
+        TokenManager.getInstance().refreshToken();
+    }
+
+    public void refreshToken(String refreshToken) {
+        TokenManager.getInstance().refreshToken();
     }
 
     /**
@@ -131,7 +141,7 @@ public class Spotify {
             return this;
         }
 
-        // TODO: maybe create create different constructors, so that there are no two same checks
+        // TODO: maybe create different constructors, so that there are no two same checks
         public Spotify buildAuthCodeFlow() {
             if (clientId == null || clientSecret == null) {
                 throw new RuntimeException("Cannot create Authorization Code Flow; clientId=" + clientId + " clientSecret=" + clientSecret);
