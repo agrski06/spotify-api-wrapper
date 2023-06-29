@@ -9,9 +9,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class Spotify {
@@ -27,7 +29,7 @@ public class Spotify {
      * @param clientSecret registered app clientSecret
      * @param enableLogging enable http requests logging
      */
-    private Spotify(String clientId, String clientSecret, String code, String redirectUri, boolean enableLogging) {
+    private Spotify(String clientId, String clientSecret, String code, String redirectUri, boolean enableLogging, Set<String> markets) {
         Retrofit retrofit = getRetrofit(enableLogging);
         Credentials credentials = new Credentials(clientId, clientSecret);
         CredentialsService credentialsService = retrofit.create(CredentialsService.class);
@@ -53,6 +55,17 @@ public class Spotify {
             TokenManager.getInstance().setAuthToken(this.authToken);
             TokenManager.getInstance().setAuthType(AuthType.AUTH_CODE);
         }
+
+        if (markets != null) {
+            setMarkets(markets);
+        }
+    }
+
+    private void setMarkets(Set<String> markets) {
+        if (!this.api.getMarkets().containsAll(markets)) {
+            throw new RuntimeException("Invalid default market provided!");
+        }
+        this.api.setDefaultMarkets(markets);
     }
 
     private static Retrofit getRetrofit(boolean enableLogging) {
@@ -115,6 +128,7 @@ public class Spotify {
         private String code;
         private String redirectUri;
         private boolean enableHttpRequestLogging = false;
+        private Set<String> defaultMarkets;
 
         public Builder setClientId(String clientId) {
             this.clientId = clientId;
@@ -141,16 +155,21 @@ public class Spotify {
             return this;
         }
 
+        public Builder setDefaultMarkets(String... markets) {
+            this.defaultMarkets = Arrays.stream(markets).collect(Collectors.toSet());
+            return this;
+        }
+
         // TODO: maybe create different constructors, so that there are no two same checks
         public Spotify buildAuthCodeFlow() {
             if (clientId == null || clientSecret == null) {
                 throw new RuntimeException("Cannot create Authorization Code Flow; clientId=" + clientId + " clientSecret=" + clientSecret);
             }
-            return new Spotify(clientId, clientSecret, code, redirectUri, enableHttpRequestLogging);
+            return new Spotify(clientId, clientSecret, code, redirectUri, enableHttpRequestLogging, defaultMarkets);
         }
 
         public Spotify buildClientCredentialsFlow() {
-            return new Spotify(clientId, clientSecret, null, null, enableHttpRequestLogging);
+            return new Spotify(clientId, clientSecret, null, null, enableHttpRequestLogging, defaultMarkets);
         }
 
         /**
@@ -158,7 +177,7 @@ public class Spotify {
          * @return Spotify instance
          */
         public Spotify build() {
-            return new Spotify(clientId, clientSecret, code, redirectUri, enableHttpRequestLogging);
+            return new Spotify(clientId, clientSecret, code, redirectUri, enableHttpRequestLogging, defaultMarkets);
         }
 
     }

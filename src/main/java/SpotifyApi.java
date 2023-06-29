@@ -26,6 +26,7 @@ public class SpotifyApi {
     private final ServiceManager serviceManager;
     private AuthType authType;
     private Set<AuthScope> authScopes;
+    private Set<String> defaultMarkets;
 
     public SpotifyApi(Token token, boolean enableLogging) {
         if (token instanceof AuthToken) {
@@ -86,6 +87,10 @@ public class SpotifyApi {
         }
     }
 
+    public void setDefaultMarkets(Set<String> defaultMarkets) {
+        this.defaultMarkets = defaultMarkets;
+    }
+
     //////////////////////////////////////
     //           API METHODS
     //////////////////////////////////////
@@ -99,6 +104,14 @@ public class SpotifyApi {
                 .getGenres()
                 .stream().map(Genre::new)
                 .collect(Collectors.toSet());
+    }
+
+    //////////////////////////////////////
+    //           MARKETS
+    //////////////////////////////////////
+
+    public Set<String> getMarkets() {
+        return serviceManager.getMarketsService().getMarkets().responseBody().getMarkets();
     }
 
     //////////////////////////////////////
