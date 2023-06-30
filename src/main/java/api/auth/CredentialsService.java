@@ -17,6 +17,11 @@ public interface CredentialsService {
                              @Field("client_secret") String clientSecret,
                              @Field("grant_type") String grantType);
 
+    @POST("api/token")
+    @FormUrlEncoded
+    SyncCall<Token> getRefreshToken(@Header("Authorization") String authHeader,
+                                    @Field("grant_type") String request);
+
     @GET("authorize")
     Call<Token> getToken(@Query("client_id") String clientId,
                              @Query("response_type") String responseType,

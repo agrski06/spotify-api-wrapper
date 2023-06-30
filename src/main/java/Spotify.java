@@ -42,6 +42,8 @@ public class Spotify {
                     credentials.getGrantType()).responseBody();
             api = new SpotifyApi(this.token, enableLogging);
 
+            String authHeader = "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+            TokenManager.getInstance().setAuthString(authHeader);
             TokenManager.getInstance().setToken(this.token);
             TokenManager.getInstance().setAuthType(AuthType.CLIENT_CREDENTIALS);
         } else {

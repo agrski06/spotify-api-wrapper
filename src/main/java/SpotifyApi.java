@@ -123,7 +123,6 @@ public class SpotifyApi {
     }
 
     // TODO: more search options
-    // TODO: default values for market etc.
 
     //////////////////////////////////////
     //           TRACKS
@@ -227,6 +226,9 @@ public class SpotifyApi {
     }
 
     public Recommendation getRecommendation(RecommendationRequest request) {
+        if (defaultMarkets != null && request.getMarket() == null) {
+            request.setMarket(String.join(",", defaultMarkets));
+        }
         return serviceManager.getTrackService().getRecommendation(
                 request.getLimit(),
                 request.getMarket(),

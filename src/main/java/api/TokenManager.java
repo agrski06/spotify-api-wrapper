@@ -33,6 +33,10 @@ public class TokenManager {
     }
 
     public void refreshToken() {
+        if (authType.equals(AuthType.CLIENT_CREDENTIALS)) {
+            this.token = credentialsService.getRefreshToken(authString, "client_credentials").responseBody();
+            return;
+        }
         AuthTokenResponse response = credentialsService.getRefreshToken("refresh_token", authToken.getRefreshToken(), this.authString).responseBody();
         this.authToken.setAccessToken(response.getAccessToken());
         this.authToken.getScopes().addAll(Arrays.stream(response.getScope().split(" "))

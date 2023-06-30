@@ -32,9 +32,11 @@ public class SyncCall<R> {
                 return response.body();
             } else {
                 if (response.code() == 401) {
-                    // TODO: in future, implement refresh token there
+                    System.out.println("Token expired.. trying to refresh");
                     TokenManager.getInstance().refreshToken();
-                    throw new RuntimeException(response.message() + " (your token may be expired or revoked)");
+                    System.out.println("Token refreshed!");
+                    call = call.clone();
+                    return responseBody();
                 }
                 if (response.code() == 429) {
                     throw new RuntimeException(response.message() + " (Spotify App rate limits exceeded?)");
