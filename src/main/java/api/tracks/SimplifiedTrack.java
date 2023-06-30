@@ -1,6 +1,5 @@
 package api.tracks;
 
-import api.ExternalIds;
 import api.ExternalUrls;
 import api.Restrictions;
 import api.tracks.album.TrackAlbum;
@@ -11,17 +10,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+// This is literally track without 2 fields (externalIds, popularity). Why does spotify do this?
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Track {
+public class SimplifiedTrack {
     private TrackAlbum album;
     private Set<TrackArtist> artists;
     private Set<String> availableMarkets;
     private Integer discNumber;
     private Integer durationMs;
     private boolean explicit;
-    private ExternalIds externalIds;
     private ExternalUrls externalUrls;
     private String href;
     private String id;
@@ -29,7 +28,6 @@ public class Track {
     private LinkedFrom linkedFrom;
     private Restrictions restrictions;
     private String name;
-    private Integer popularity;
     private String previewUrl;
     private Integer trackNumber;
     private String type;

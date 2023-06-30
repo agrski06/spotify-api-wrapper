@@ -1,6 +1,6 @@
-package api.tracks.artist;
+package api.artists;
 
-import api.tracks.ExternalUrls;
+import api.ExternalUrls;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

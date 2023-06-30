@@ -1,4 +1,4 @@
-package api.tracks;
+package api;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

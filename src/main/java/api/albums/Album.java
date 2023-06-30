@@ -1,11 +1,12 @@
-package api.tracks.album;
+package api.albums;
 
 import api.Copyright;
 import api.ExternalIds;
 import api.ExternalUrls;
-import api.Image;
 import api.Restrictions;
-import api.artists.SimplifiedArtist;
+import api.artists.Artist;
+import api.Image;
+import api.tracks.SimplifiedTrack;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +16,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TrackAlbum {
-    private String albumType; //todo enum
-    private Integer totalTracks;
+public class Album {
+    private String albumType;
+    private int totalTracks;
     private Set<String> availableMarkets;
     private ExternalUrls externalUrls;
     private String href;
@@ -29,11 +30,11 @@ public class TrackAlbum {
     private Restrictions restrictions;
     private String type;
     private String uri;
-    private Copyright copyrights;
+    private Set<Copyright> copyrights;
     private ExternalIds externalIds;
     private Set<String> genres;
     private String label;
-    private Integer popularity;
-    private String albumGroup;
-    private Set<SimplifiedArtist> artists;
+    private int popularity;
+    private Set<Artist> artists;
+    private Set<SimplifiedTrack> tracks;
 }
