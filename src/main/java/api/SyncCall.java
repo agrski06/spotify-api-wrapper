@@ -54,6 +54,16 @@ public class SyncCall<R> {
         return null;
     }
 
+    public Response<R> execute() {
+        Response<R> response = null;
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
     private void handleResponse(Response<R> response, ResponseHandler<R> responseHandler) {
         if (response != null && response.isSuccessful()) {
             responseHandler.accept(response.body(), null);

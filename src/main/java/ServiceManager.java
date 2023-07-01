@@ -1,3 +1,4 @@
+import api.albums.AlbumService;
 import api.genres.GenreService;
 import api.markets.MarketsService;
 import api.search.SearchService;
@@ -13,6 +14,7 @@ public class ServiceManager {
     private final TrackService trackService;
     private final SearchService searchService;
     private final MarketsService marketsService;
+    private final AlbumService albumService;
 
     public ServiceManager(Retrofit retrofit) {
         this.retrofit = retrofit;
@@ -20,5 +22,6 @@ public class ServiceManager {
         this.trackService = retrofit.create(TrackService.class);
         this.searchService = retrofit.create(SearchService.class);
         this.marketsService = retrofit.create(MarketsService.class);
+        this.albumService = retrofit.create(AlbumService.class);
     }
 }

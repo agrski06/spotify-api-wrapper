@@ -41,7 +41,7 @@ public interface AlbumService {
      */
     @DELETE("me/albums")
     SyncCall<Void> deleteAlbumsFromUser(@Query("ids") String ids,
-                                     @Body SaveAlbumRequest request);
+                                     @Body RemoveAlbumRequest request);
 
     /**
      * Requires user-library-read

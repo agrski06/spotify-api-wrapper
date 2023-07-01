@@ -1,4 +1,5 @@
 import api.SyncCallAdapterFactory;
+import api.albums.*;
 import api.auth.AuthScope;
 import api.auth.AuthToken;
 import api.auth.AuthType;
@@ -94,6 +95,81 @@ public class SpotifyApi {
     //////////////////////////////////////
     //           API METHODS
     //////////////////////////////////////
+
+    //////////////////////////////////////
+    //           GENRES
+    //////////////////////////////////////
+
+    public Album getAlbum(String id) {
+        return serviceManager.getAlbumService().getAlbum(id, defaultMarkets.size() > 0
+                ? String.join(",", defaultMarkets)
+                : null).responseBody();
+    }
+
+    public Album getAlbum(String id, String market) {
+        return serviceManager.getAlbumService().getAlbum(id, market).responseBody();
+    }
+
+    public Set<Album> getAlbums(String ids) {
+        return serviceManager.getAlbumService().getAlbums(ids, defaultMarkets.size() > 0
+                ? String.join(",", defaultMarkets)
+                : null).responseBody();
+    }
+
+    public Set<Album> getAlbums(String ids, String market) {
+        return serviceManager.getAlbumService().getAlbums(ids, market).responseBody();
+    }
+
+    public Set<Album> getAlbums(String... ids) {
+        return serviceManager.getAlbumService().getAlbums(String.join(",", ids), defaultMarkets.size() > 0
+                ? String.join(",", defaultMarkets)
+                : null).responseBody();
+    }
+
+    public Set<Album> getAlbums(String market, String... ids) {
+        return serviceManager.getAlbumService().getAlbums(String.join(",", ids), market).responseBody();
+    }
+
+    public TrackPage getAlbumTracks(String id, String market, Integer limit, Integer offset) {
+        return serviceManager.getAlbumService().getAlbumTracks(id, market, limit, offset).responseBody();
+    }
+
+    public TrackPage getAlbumTracks(String id) {
+        return getAlbumTracks(id, null, null, null);
+    }
+
+    public AlbumPage getUsersAlbums(String market, Integer limit, Integer offset) {
+        checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's albums (no user-library-read scope).");
+        return serviceManager.getAlbumService().getUsersAlbums(limit, offset, market).responseBody();
+    }
+
+    public AlbumPage getUsersAlbums() {
+        checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's albums (no user-library-read scope).");
+        return serviceManager.getAlbumService().getUsersAlbums(null, null, null).responseBody();
+    }
+
+    public boolean saveAlbumsForUser(SaveAlbumRequest request) {
+        checkAuth(AuthScope.USER_LIBRARY_MODIFY, "Cannot save album (no user-library-modify scope).");
+        return serviceManager.getAlbumService().saveAlbumsForUser(request.getIds().toString(), request).execute().isSuccessful();
+    }
+
+    public boolean deleteAlbumsForUser(RemoveAlbumRequest request) {
+        checkAuth(AuthScope.USER_LIBRARY_MODIFY, "Cannot delete album (no user-library-modify scope).");
+        return serviceManager.getAlbumService().deleteAlbumsFromUser(request.getIds().toString(), request).execute().isSuccessful();
+    }
+
+    public Set<Boolean> checkIfUserHasAlbumsSaved(String... ids) {
+        checkAuth(AuthScope.USER_LIBRARY_READ, "Cannot read user's albums (no user-library-read scope).");
+        return serviceManager.getAlbumService().checkIfUserHasAlbumsSaved(String.join(",", ids)).responseBody();
+    }
+
+    public NewReleasesResponse getNewReleases(String country, Integer limit, Integer offset) {
+        return serviceManager.getAlbumService().getNewReleases(country, limit, offset).responseBody();
+    }
+
+    public NewReleasesResponse getNewReleases() {
+        return serviceManager.getAlbumService().getNewReleases(null, null, null).responseBody();
+    }
 
     //////////////////////////////////////
     //           GENRES
