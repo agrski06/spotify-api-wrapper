@@ -1,5 +1,6 @@
 package api.search;
 
+import api.albums.AlbumPage;
 import api.artists.ArtistPage;
 import api.tracks.TrackPage;
 import lombok.AllArgsConstructor;
@@ -12,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class SearchResponse {
     private TrackPage tracks;
     private ArtistPage artists;
+    private AlbumPage albums;
     // TODO: albums, playlists, shows, episodes, audiobooks
 }

@@ -1,5 +1,7 @@
 import api.SyncCallAdapterFactory;
 import api.albums.*;
+import api.artists.Artist;
+import api.artists.ArtistsResponse;
 import api.auth.AuthScope;
 import api.auth.AuthToken;
 import api.auth.AuthType;
@@ -10,7 +12,6 @@ import api.search.SearchType;
 import api.tracks.*;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import lombok.NonNull;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -97,7 +98,7 @@ public class SpotifyApi {
     //////////////////////////////////////
 
     //////////////////////////////////////
-    //           GENRES
+    //           ALBUMS
     //////////////////////////////////////
 
     public Album getAlbum(String id) {
@@ -169,6 +170,34 @@ public class SpotifyApi {
 
     public NewReleasesResponse getNewReleases() {
         return serviceManager.getAlbumService().getNewReleases(null, null, null).responseBody();
+    }
+
+    //////////////////////////////////////
+    //           ARTISTS
+    //////////////////////////////////////
+
+    public Artist getArtist(String id) {
+        return serviceManager.getArtistService().getArtist(id).responseBody();
+    }
+
+    public Set<Artist> getArtist(String... ids) {
+        return serviceManager.getArtistService().getArtists(String.join(",", ids)).responseBody().getArtists();
+    }
+
+    public AlbumPage getArtistAlbum(String id, String includeGroups, String market, Integer limit, Integer offset) {
+        return serviceManager.getArtistService().getArtistAlbums(id, includeGroups, market, limit, offset).responseBody();
+    }
+
+    public AlbumPage getArtistAlbum(String id) {
+        return getArtistAlbum(id, null, null, null, null);
+    }
+
+    public Set<Track> getArtistTopTracks(String id, String market) {
+        return serviceManager.getArtistService().getArtistTopTracks(id, market).responseBody().getTracks();
+    }
+
+    public Set<Artist> getRelatedArtists(String id) {
+        return serviceManager.getArtistService().getRelatedArtists(id).responseBody().getArtists();
     }
 
     //////////////////////////////////////
