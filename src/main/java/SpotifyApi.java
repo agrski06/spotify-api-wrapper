@@ -1,6 +1,7 @@
 import api.SyncCallAdapterFactory;
 import api.albums.*;
 import api.artists.Artist;
+import api.artists.ArtistPage;
 import api.artists.ArtistsResponse;
 import api.auth.AuthScope;
 import api.auth.AuthToken;
@@ -28,7 +29,7 @@ public class SpotifyApi {
     private final ServiceManager serviceManager;
     private AuthType authType;
     private Set<AuthScope> authScopes;
-    private Set<String> defaultMarkets;
+    private Set<String> defaultMarkets = null;
 
     public SpotifyApi(Token token, boolean enableLogging) {
         if (token instanceof AuthToken) {
@@ -78,6 +79,10 @@ public class SpotifyApi {
         if (!authScopes.contains(scope)) {
             throw new RuntimeException(errorMessage);
         }
+    }
+
+    private String defaultMarketString() {
+        return defaultMarkets == null ? null : String.join(",", defaultMarkets);
     }
 
     private void checkAuth(Set<AuthScope> scopes, String errorMessage) {
@@ -224,7 +229,27 @@ public class SpotifyApi {
     //////////////////////////////////////
 
     public SearchResponse search(String query, SearchType type, String market, Integer limit, Integer offset, String includeExternal) {
-        return serviceManager.getSearchService().search(query, type.toString(), market, limit, offset, includeExternal).responseBody();
+        return serviceManager.getSearchService().search(query, type == null ? SearchType.getAllAsCommaSeparatedString() : type.toString(), market, limit, offset, includeExternal).responseBody();
+    }
+
+    public SearchResponse search(String query) {
+        return search(query, null, defaultMarketString(), null, null, null);
+    }
+
+    public SearchResponse search(String query, SearchType type) {
+        return search(query, type, defaultMarketString(), null, null, null);
+    }
+
+    public AlbumPage searchAlbum(String query) {
+        return search(query, SearchType.ALBUM, defaultMarketString(), null, null, null).getAlbums();
+    }
+
+    public TrackPage searchTrack(String query) {
+        return search(query, SearchType.TRACK, defaultMarketString(), null, null, null).getTracks();
+    }
+
+    public ArtistPage searchArtist(String query) {
+        return search(query, SearchType.ARTIST, defaultMarketString(), null, null, null).getArtists();
     }
 
     // TODO: more search options
