@@ -81,7 +81,7 @@ public class Spotify {
 
         if (enableLogging) {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
             OkHttpClient client = new OkHttpClient().newBuilder().addInterceptor(logging).build();
             retrofitBuilder.client(client);
         }
