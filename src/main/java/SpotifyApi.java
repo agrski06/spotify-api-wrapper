@@ -1,3 +1,6 @@
+import api.BaseItem;
+import api.Page;
+import api.PageService;
 import api.SyncCallAdapterFactory;
 import api.albums.*;
 import api.artists.Artist;
@@ -19,7 +22,10 @@ import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Url;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -101,6 +107,17 @@ public class SpotifyApi {
     //////////////////////////////////////
     //           API METHODS
     //////////////////////////////////////
+
+    public <T extends BaseItem> Page<T> nextPage(Page<T> page) {
+        try {
+            URL url = new URL(page.getNext());
+            PageService pageService = retrofit.create(PageService.class);
+            return (Page<T>) pageService.nextPage(url.getQuery()).responseBody();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     //////////////////////////////////////
     //           ALBUMS
